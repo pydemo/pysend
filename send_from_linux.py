@@ -29,3 +29,4 @@ n2=dt.datetime.now()
 diff=(n2-n1)
 print diff.seconds
 e(0)
+
