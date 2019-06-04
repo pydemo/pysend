@@ -1,6 +1,13 @@
 import socket 
 import sys
 import datetime as dt
+
+from pprint import pprint
+try:
+	import cPickle as pickle
+except:
+	import pickle
+
 e=sys.exit
 n1=dt.datetime.now()
 #s = socket.socket()
@@ -9,7 +16,7 @@ s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 s.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
 #s.setsockopt(socket.IPPROTO_TCP, socket.TCP_CORK, 1)
 
-host = 'WHKWDCTGABUZUN1' 
+host = 'NYBUZNOV' 
 port = 12348           # Reserve a port for your service.
 s.connect((host, port))
 #f = open('/dump2/oats/101316/rawdata/pr1lsmars11.20161013.TransOrd.dat.gz') 
@@ -17,11 +24,14 @@ s.connect((host, port))
 #f = open('/Bic/scripts/oats/py27/bin/file.txt','rb')
 print 'Sending..',
 #l = f.read(100*1024)
-for i in range(1000):
-  print '.',
-  s.send('Message %s\n' % i)
-  #l = f.read(100*1024)
-#f.close()
+with open('_test.csv') as fh:
+	line=fh.readline()
+	while line:
+		pprint (line)
+		pprint(pickle.dumps(line))
+		s.send(pickle.dumps(line))
+		line=fh.readline()
+
 print "Done Sending"
 s.shutdown(socket.SHUT_WR)
 s.close
@@ -29,4 +39,3 @@ n2=dt.datetime.now()
 diff=(n2-n1)
 print diff.seconds
 e(0)
-
